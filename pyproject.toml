@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools==82.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voxturbo"
+version = "0.1.0"
+description = "Local voice dictation for Windows 10 with clipboard restoration"
+requires-python = ">=3.13,<3.14"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+  "PySide6==6.11.2",
+  "numpy==2.5.3",
+  "sounddevice==0.5.6",
+  "onnx-asr[cpu]==0.12.0",
+  "onnxruntime==1.30.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "ruff==0.16.8", "pyinstaller==6.22.3"]
+
+[project.gui-scripts]
+voxturbo = "voxturbo.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "unit: isolated tests without hardware",
+  "integration: component integration",
+  "windows: real Windows clipboard or input",
+  "interactive: requires dedicated interactive desktop",
+  "model: requires explicitly installed local model",
+  "slow: long running validation",
+]
